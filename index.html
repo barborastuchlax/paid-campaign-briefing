@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Paid Campaign Structure — Briefing for Jake</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --ink: #1a1f2b;
+    --ink-soft: #5a626f;
+    --line: #e8e8ea;
+    --line-strong: #c8cacd;
+    --accent: #1f3a34;
+    --accent-soft: #e8efe9;
+    --star: #b38a2a;
+    --track1: #1f3a34;
+    --track2: #1f3a34;
+    --wave1: #1f3a34;
+    --wave2: #1f3a34;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 56px 32px 96px; }
+  header.masthead {
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 28px;
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  h1 {
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 10px 0 6px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .subtitle { color: var(--ink-soft); font-size: 17px; margin: 0; }
+  h2 {
+    font-size: 24px;
+    margin: 48px 0 14px;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+  }
+  h3 { font-size: 17px; margin: 0 0 6px; font-weight: 700; }
+  h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin: 18px 0 8px; font-weight: 600; }
+  p { margin: 0 0 14px; }
+  .lead { font-size: 17px; color: var(--ink); }
+  ul.lead-list { margin: 6px 0 18px; padding-left: 22px; font-size: 16px; color: var(--ink); }
+  ul.lead-list li { margin-bottom: 10px; line-height: 1.55; }
+  ul.lead-list li:last-child { margin-bottom: 0; }
+
+  /* Overview two-track visual */
+  .tracks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 24px 0 8px;
+  }
+  .track {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 20px 22px;
+    position: relative;
+  }
+  .track.t1 { border-left: 4px solid var(--track1); }
+  .track.t2 { border-left: 4px solid var(--track2); }
+  .track .badge {
+    display: inline-block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .track h3 { font-size: 19px; margin-bottom: 6px; }
+  .track .share {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .angle-list { list-style: none; padding: 0; margin: 0; }
+  .angle-list li {
+    padding: 8px 0;
+    border-top: 1px dashed var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    font-size: 14px;
+  }
+  .angle-list li:first-child { border-top: none; }
+  .angle-list .name { font-weight: 600; }
+  .angle-list .star { color: var(--star); font-weight: 700; font-size: 11px; letter-spacing: 0.08em; }
+  .angle-list .note { color: var(--ink-soft); font-size: 12.5px; font-style: italic; }
+  .pillars {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .pillars strong { color: var(--ink); font-weight: 600; }
+
+  /* Pipeline — multi-touch */
+  .pipeline {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    gap: 14px;
+    margin: 20px 0 8px;
+    align-items: stretch;
+  }
+  .stages { display: flex; flex-direction: column; gap: 8px; }
+  .stage-band {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--line-strong);
+    border-radius: 6px;
+    padding: 14px 18px;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+  /* Each stage has its own color — cool→warm progression through the funnel */
+  .stage-band.cold,
+  .stage-band.aware,
+  .stage-band.engaged,
+  .stage-band.mql,
+  .stage-band.sql { border-left-width: 5px; }
+  .stage-band.cold    { background: #eef2f7; border-left-color: #94a5b8; }
+  .stage-band.aware   { background: #e8f1ed; border-left-color: #6d9a8f; }
+  .stage-band.engaged { background: #d9e8e0; border-left-color: #3e7a6a; }
+  .stage-band.mql     { background: #c7dcd0; border-left-color: #1f3a34; }
+  .stage-band.sql     { background: #b2cdbf; border-left-color: #0f1f1a; border-left-width: 6px; }
+  /* Stage label color matches the border so it reads as a progression at a glance */
+  .stage-band.cold    .stage-label { color: #5d6e82; }
+  .stage-band.aware   .stage-label { color: #4a7a6e; }
+  .stage-band.engaged .stage-label { color: #1f3a34; }
+  .stage-band.mql     .stage-label { color: #1f3a34; }
+  .stage-band.sql     .stage-label { color: #0f1f1a; }
+  /* Chips reflect the stage they sit in — same color family, darker tint than stage bg */
+  .stage-band.cold    .chip { background: #dbe4ee; border-color: #b9c5d3; color: #3a475a; }
+  .stage-band.aware   .chip { background: #c9ddd3; border-color: #a9c4b8; color: #2f5449; }
+  .stage-band.engaged .chip { background: #b1ccbf; border-color: #8eb3a3; color: #1f3a34; }
+  .stage-band.mql     .chip { background: #9ebcac; border-color: #7ba090; color: #14261f; }
+  .stage-band.sql     .chip { background: #86ab99; border-color: #6b9483; color: #0f1f1a; }
+  /* Retargeting lightly highlighted — soft gold in any stage */
+  .stage-band .chip.retarget { background: #f5ead0; border-color: #dcc792; color: #6a5418; font-weight: 600; }
+  .stage-band .stage-label {
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .stage-band .stage-desc {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .stage-band .stage-role {
+    font-size: 11.5px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-top: 6px;
+    font-style: italic;
+  }
+  .stage-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #f3f4f6;
+    color: var(--ink);
+    font-weight: 500;
+    border: 1px solid #e1e3e6;
+    white-space: nowrap;
+  }
+  /* Retargeting is the only highlighted chip — it's the diagram's recurring motif */
+  .chip.retarget { background: #f5ead0; color: #6a5418; border-color: #dcc792; font-weight: 600; }
+  .retarget-rail {
+    background: #faf3e2;
+    border: 1px solid #ebddb6;
+    border-radius: 6px;
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .rail-arrow {
+    font-size: 44px;
+    line-height: 1;
+    color: var(--star);
+    font-weight: 400;
+  }
+  .rail-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--star);
+    margin-top: 8px;
+  }
+  .rail-label {
+    font-size: 12px;
+    color: var(--ink);
+    margin-top: 6px;
+    line-height: 1.45;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 12px 0 0;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  /* Waves timeline */
+  .timeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 18px;
+  }
+  .wave {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 20px 22px;
+    background: var(--surface);
+  }
+  .wave.w1 { border-left: 4px solid var(--wave1); }
+  .wave.w2 { border-left: 4px solid var(--wave2); }
+  .wave .when {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .wave h3 { font-size: 18px; margin: 4px 0 10px; }
+  .wave p { font-size: 14px; color: var(--ink-soft); }
+  .wave .purpose {
+    font-size: 14px;
+    color: var(--ink);
+    margin: 6px 0 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .wave dl.wave-meta {
+    display: grid;
+    grid-template-columns: 105px 1fr;
+    gap: 8px 14px;
+    margin: 0;
+    font-size: 13.5px;
+  }
+  .wave dl.wave-meta dt {
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    font-weight: 600;
+    padding-top: 2px;
+  }
+  .wave dl.wave-meta dd {
+    margin: 0;
+    color: var(--ink);
+  }
+  .wave dl.wave-meta dd strong { color: var(--ink); }
+
+  /* Deepdive */
+  details {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  details[open] { border-color: var(--line-strong); }
+  summary {
+    padding: 16px 22px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  summary:hover { background: #f5f5f7; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+";
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    transition: transform 0.2s;
+    line-height: 1;
+  }
+  details[open] summary::after { content: "−"; }
+  .details-body {
+    padding: 4px 22px 22px;
+    border-top: 1px solid var(--line);
+  }
+  .summary-tag {
+    display: inline-block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-right: 10px;
+  }
+
+  /* Ad sets table */
+  table.adsets {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13.5px;
+  }
+  table.adsets th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  table.adsets td {
+    padding: 10px 10px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.adsets tr:last-child td { border-bottom: none; }
+  table.adsets td.name { font-weight: 600; white-space: nowrap; }
+  table.adsets td.purpose { color: var(--ink-soft); }
+
+  /* Budget */
+  .budget-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .budget-card {
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 14px 16px;
+    border: 1px solid #d7e0d8;
+  }
+  .budget-card .period {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .budget-card .amt { font-size: 20px; font-weight: 700; margin-top: 4px; }
+  .budget-card .detail { font-size: 12.5px; color: var(--ink-soft); margin-top: 4px; }
+
+  /* Expectations */
+  .expect-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 10px;
+  }
+  .expect {
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+  }
+  .expect .n { font-size: 24px; font-weight: 700; color: var(--accent); }
+  .expect .l { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); font-weight: 600; margin-top: 4px; }
+  .expect .d { font-size: 13px; color: var(--ink-soft); margin-top: 6px; }
+
+  .callout {
+    background: #faf3e2;
+    border-left: 3px solid var(--star);
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin: 14px 0 0;
+    color: var(--ink);
+  }
+  .callout strong { color: var(--star); }
+
+  /* Sheet links — inline and tile */
+  a.sheet-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid #c7d5c9;
+    padding: 3px 9px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  a.sheet-link:hover { background: #d8e2da; }
+  a.sheet-link::before {
+    content: "↗";
+    font-size: 11px;
+    color: var(--accent);
+  }
+
+  .sheet-refs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0 0;
+  }
+  .sheet-ref {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .sheet-ref:hover { background: var(--accent-soft); border-left-color: var(--accent); }
+  .sheet-ref .sr-kicker {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 3px;
+  }
+  .sheet-ref .sr-name {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sheet-ref .sr-name::after {
+    content: "↗";
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+  .sheet-ref .sr-desc {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.45;
+  }
+  @media (max-width: 780px) {
+    .sheet-refs { grid-template-columns: 1fr; }
+  }
+
+  .footer {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+
+  ul.tight { margin: 4px 0 12px; padding-left: 18px; }
+  ul.tight li { margin-bottom: 4px; }
+
+  @media (max-width: 780px) {
+    .tracks, .timeline, .budget-grid, .expect-grid, .pipeline { grid-template-columns: 1fr; }
+    .stage-band { grid-template-columns: 1fr; gap: 10px; }
+    h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">Briefing for Jake</div>
+  <h1>Paid campaign structure, at a glance</h1>
+  <p class="subtitle">How it's built, why it's built this way, and what to expect once it's all running.</p>
+  <div class="sheet-refs">
+    <a class="sheet-ref" href="https://docs.google.com/spreadsheets/d/1UXhgYhPgjbk-n2r3yPwloI-0xV5GjwvE/edit?gid=999722113#gid=999722113" target="_blank" rel="noopener">
+      <span class="sr-kicker">Sheet</span>
+      <span class="sr-name">Paid LinkedIn Overview and Copy</span>
+      <span class="sr-desc">Ad-by-ad copy — primary text, on-visual headline, LinkedIn headline, CTA. Plus a Carousel Slides tab for the two carousels.</span>
+    </a>
+    <a class="sheet-ref" href="https://docs.google.com/spreadsheets/d/1C6-hIk_kxsRV9vlGkEEMWbtzVDInwyaK/edit?gid=255209331#gid=255209331" target="_blank" rel="noopener">
+      <span class="sr-kicker">Sheet</span>
+      <span class="sr-name">Paid Google Overview and Copy</span>
+      <span class="sr-desc">10 ad groups, RSA format — headlines and descriptions for Google Search.</span>
+    </a>
+    <a class="sheet-ref" href="https://docs.google.com/spreadsheets/d/1xdBd7jX-BEenHvnEmELwZ3V0yrU69Fjf/edit?gid=288246099#gid=288246099" target="_blank" rel="noopener">
+      <span class="sr-kicker">Sheet</span>
+      <span class="sr-name">Budget Breakdown</span>
+      <span class="sr-desc">Month-by-month spend split across LinkedIn, Google, and the Clutch test.</span>
+    </a>
+  </div>
+</header>
+
+<!-- ===== OVERVIEW ===== -->
+<section>
+  <ul class="lead-list">
+    <li><strong>Two tracks, six angles</strong> across LinkedIn and Google Search, running from mid-April through summer.</li>
+    <li><strong>Two tracks, not one,</strong> because vertical CTOs/CPOs (fintech, cyber, healthtech) and SaaS CTOs/CPOs read different ads — pooling them would dull both messages.</li>
+    <li><strong>Three angles per track</strong> for real testing: the primary bet, a proof-point variant, and a positioning variant.</li>
+    <li><strong>Two waves split the funnel.</strong> Wave 1 warms cold audiences and runs outbound in parallel. Wave 2 layers in consideration and retargeting once the four industry pages (fintech, cybersecurity, healthtech, SaaS/general) and a new reviews page are live.</li>
+  </ul>
+
+  <div class="tracks">
+    <div class="track t1">
+      <span class="badge">Track 1 · ~60% of LinkedIn</span>
+      <h3>Priority Verticals</h3>
+      <div class="share">CTOs / CPOs at high-growth fintech, cybersecurity, and healthtech companies</div>
+      <ul class="angle-list">
+        <li><span class="name">Industry Expertise <span class="star">PRIMARY ★</span></span><span class="note">Domain knowledge, regulatory fluency, proof</span></li>
+        <li><span class="name">Compliance Expertise</span><span class="note">ISO-certified security practices</span></li>
+        <li><span class="name">AI as Accelerator</span><span class="note">Build AI in + use AI to build</span></li>
+      </ul>
+      <div class="pillars"><strong>Anchored to:</strong> Deep Domain Expertise + Long-Term Partnership</div>
+    </div>
+    <div class="track t2">
+      <span class="badge">Track 2 · ~40% of LinkedIn</span>
+      <h3>SaaS + General Software</h3>
+      <div class="share">CTOs / CPOs at high-growth B2B SaaS companies (excl. priority verticals)</div>
+      <ul class="angle-list">
+        <li><span class="name">The Scaling Problem</span><span class="note">"Your roadmap is ready. Your team is at capacity."</span></li>
+        <li><span class="name">Product & Engineering Partner</span><span class="note">Core positioning, two models, 4-yr retention</span></li>
+        <li><span class="name">Elite Engineering + AI</span><span class="note">Top 0.4% talent, Prague-based, US-focused</span></li>
+      </ul>
+      <div class="pillars"><strong>Anchored to:</strong> Product Thinking + Elite Engineering Talent</div>
+      <div class="pillars" style="margin-top:6px;"><strong>Why narrow targeting:</strong> SaaS is a business model, not a vertical — we don't claim SaaS domain expertise. We claim execution, talent, and partnership, which is exactly what SaaS CTOs/CPOs evaluate when choosing a product engineering partner.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PIPELINE ===== -->
+<section>
+  <h2>How an MQL actually happens</h2>
+  <p>It's not a one-click funnel. In this business it's typically <strong>5–9 touches over 3–6 months</strong>, and most MQLs won't credit paid directly — they'll say "saw you on LinkedIn" or "a colleague mentioned you." Paid's role is to make those answers possible. <strong>Retargeting is the loop</strong> that holds the whole thing together.</p>
+
+  <div class="pipeline">
+    <div class="stages">
+      <div class="stage-band cold">
+        <div>
+          <div class="stage-label">Cold</div>
+          <div class="stage-desc">In our target audience. Doesn't know us yet.</div>
+          <div class="stage-role">Our job: get on their radar.</div>
+        </div>
+        <div class="stage-chips">
+          <span class="chip">LinkedIn awareness ads</span>
+          <span class="chip">Google Search ads</span>
+          <span class="chip">Thought leadership posts</span>
+          <span class="chip">Thought Leader Ads (Jake)</span>
+        </div>
+      </div>
+      <div class="stage-band aware">
+        <div>
+          <div class="stage-label">Aware</div>
+          <div class="stage-desc">Has seen us a few times in-feed. Remembers the brand, no action yet.</div>
+          <div class="stage-role">Our job: build recognition through repetition.</div>
+        </div>
+        <div class="stage-chips">
+          <span class="chip">Repeat ad impressions</span>
+          <span class="chip">Educational carousels</span>
+          <span class="chip">Thought leadership posts</span>
+        </div>
+      </div>
+      <div class="stage-band engaged">
+        <div>
+          <div class="stage-label">Engaged</div>
+          <div class="stage-desc">Clicked an ad, visited the site, or opened an outbound email.</div>
+          <div class="stage-role">Our job: deepen interest and capture intent.</div>
+        </div>
+        <div class="stage-chips">
+          <span class="chip">Consideration ads</span>
+          <span class="chip">Google Search ads (high-intent + branded)</span>
+          <span class="chip">Gated content downloads</span>
+          <span class="chip retarget">Retargeting ads (90-day site pool)</span>
+        </div>
+      </div>
+      <div class="stage-band mql">
+        <div>
+          <div class="stage-label">MQL</div>
+          <div class="stage-desc">Raised their hand with a clear buying signal.</div>
+          <div class="stage-role">How they usually get here:</div>
+        </div>
+        <div class="stage-chips">
+          <span class="chip">Booked a call</span>
+          <span class="chip">Filled out a form</span>
+          <span class="chip">Downloaded gated content</span>
+          <span class="chip">Inbound referral</span>
+        </div>
+      </div>
+      <div class="stage-band sql">
+        <div>
+          <div class="stage-label">SQL</div>
+          <div class="stage-desc">Qualified by sales on a discovery call. ~30–40% of MQLs make it here.</div>
+          <div class="stage-role">Sales owns it from this point.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="retarget-rail" aria-hidden="true">
+      <div class="rail-arrow">↺</div>
+      <div class="rail-title">Retargeting loop</div>
+      <div class="rail-label">Anyone who touches us stays in the pool for 90 days and sees us 3–4 more times. It's not a stage — it's what keeps warm audiences moving.</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><span class="legend-dot" style="background:var(--star);border-color:var(--star);"></span>Retargeting — the loop that cycles warm audiences back through</span>
+  </div>
+
+  <h4 style="margin-top:26px;">Realities this structure acknowledges</h4>
+  <ul class="tight">
+    <li><strong>Attribution is fuzzy.</strong> Self-reported "how did you hear about us" will beat click-attribution for the MQLs we care about. Paid is air cover, not last-click.</li>
+    <li><strong>Paid doesn't close.</strong> It primes ICP accounts for outbound, organic, and Clutch conversations to land. Awareness ads should be judged on reach and retargeting-pool size, not MQLs.</li>
+    <li><strong>Retargeting is the glue.</strong> It's not a stage — it's the mechanism that cycles warm audiences back through until they're ready.</li>
+    <li><strong>Outbound runs in parallel, not downstream.</strong> Our outbound list sits inside the LinkedIn Matched Audience.</li>
+  </ul>
+
+</section>
+
+<!-- ===== WAVES ===== -->
+<section>
+  <h2>The two waves</h2>
+  <div class="timeline">
+    <div class="wave w1">
+      <div class="when">Wave 1 · Launches mid–late April</div>
+      <h3>Awareness + Outbound warm-up</h3>
+      <p class="purpose">Build brand presence in-feed and warm our outbound list so cold emails don't land cold. Judged on reach and retargeting-pool growth, not MQLs.</p>
+      <dl class="wave-meta">
+        <dt>Stages</dt><dd>Cold → Aware</dd>
+        <dt>Audience</dt><dd>Track 1 verticals (fintech, cyber, healthtech) + Track 2 SaaS ICP + our outbound list (~1,500 contacts) as a LinkedIn Matched Audience</dd>
+        <dt>Channels</dt><dd>LinkedIn paid (awareness + outbound warm-up) · Google Search always-on</dd>
+        <dt>Ads</dt><dd><strong>9 LinkedIn ads</strong> — 4 single-image awareness (T1 Tight, T1 Broad, T2 Tight, T2 Broad) + 2 carousels (CTO, CPO) + 3 outbound brand variants</dd>
+        <dt>Lands on</dt><dd>Homepage (awareness) · homepage + outbound follow-up (warm-up ads) · services pages (Google Search)</dd>
+        <dt>Pages needed</dt><dd><strong>None.</strong> Runs on existing site.</dd>
+      </dl>
+    </div>
+    <div class="wave w2">
+      <div class="when">Wave 2 · Launches early–mid May</div>
+      <h3>Consideration + Retargeting</h3>
+      <p class="purpose">Convert the audience Wave 1 warmed up. Gated downloads, book-a-call CTAs, and retargeting for website visitors + ad engagers.</p>
+      <dl class="wave-meta">
+        <dt>Stages</dt><dd>Engaged → MQL (plus the retargeting loop cycling warm audiences back)</dd>
+        <dt>Audience</dt><dd>Track 1 verticals + Track 2 SaaS (conversion-optimized) + website visitors (90d) + ad engagers</dd>
+        <dt>Channels</dt><dd>LinkedIn paid (consideration + retargeting)</dd>
+        <dt>Ads</dt><dd><strong>7 LinkedIn ads</strong> — 4 consideration (2 with gated document ads for LinkedIn Lead Gen) + 3 retargeting</dd>
+        <dt>Lands on</dt><dd>Industry pages (matching vertical) · new reviews page (T2 social proof) · LinkedIn Lead Gen Forms (gated content) · contact page (retargeting)</dd>
+        <dt>Pages needed</dt><dd><strong>5 pages live + 2 downloadables</strong> — 4 industry pages + reviews page + AI one-pager + SaaS guide. See "Pending content" below.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DEEPDIVE ===== -->
+<h2>Deepdive</h2>
+<p style="color:var(--ink-soft);margin-top:0;">Click any section to expand. Ad-set detail, budget split, and what to expect month by month.</p>
+
+<!-- Track 1 detail -->
+<details>
+  <summary><span><span class="summary-tag">Track 1</span>Priority Verticals — what each angle does</span></summary>
+  <div class="details-body">
+    <h4>Industry Expertise ★ (primary bet)</h4>
+    <p>Leads with domain knowledge and proof. "65+ products shipped. Deep experience across fintech, cybersecurity, and healthtech. ISO-certified security practices built into the architecture from day one."</p>
+    <p style="color:var(--ink-soft);font-size:14px;"><em>Why primary:</em> vertical CTOs/CPOs discount generic engineering claims. They buy from partners who already know the regulatory landscape they ship in.</p>
+
+    <h4>Compliance Expertise</h4>
+    <p>ISO-certified practices. Compliance designed into the architecture, not bolted on. This angle anchors the message in proof that a CTO/CPO can verify.</p>
+
+    <h4>AI as Accelerator</h4>
+    <p>Two claims: we build AI-powered products (LLMs, RAG, agentic) and we use AI to build faster (one engineer = 2–3x a typical hire). Consideration-stage ad pairs with a gated one-pager download.</p>
+
+    <div class="callout">
+      <strong>Positioning note:</strong> No client names in paid copy. ISO only — we don't claim SOC 2, HIPAA, or PCI-DSS certification.
+    </div>
+  </div>
+</details>
+
+<!-- Track 2 detail -->
+<details>
+  <summary><span><span class="summary-tag">Track 2</span>SaaS + General Software — what each angle does</span></summary>
+  <div class="details-body">
+    <p style="color:var(--ink-soft);font-size:14px;margin-top:-4px;"><em>Audience:</em> B2B SaaS CTOs/CPOs at 51–500-headcount companies, US, excluding fintech/cybersec/healthtech (so Track 1 audiences don't overlap). Narrower than "general tech" was — because targeted SaaS lets us lean into execution + talent + partnership claims that actually land.</p>
+    <h4>The Scaling Problem</h4>
+    <p>Pain-point first. "Your roadmap is ready. Your team is at capacity. Hiring takes months, and great hires are hard to find and slower to ramp." Names the problem before the solution.</p>
+    <p style="color:var(--ink-soft);font-size:14px;"><em>Why this works here:</em> SaaS CTOs/CPOs aren't pre-filtering on industry fit. They're filtering on "can this team actually help me ship faster without blowing out my org."</p>
+
+    <h4>Product & Engineering Partner</h4>
+    <p>Core positioning. Two delivery models (embed or autonomous), 4-year average client partnership, 5.0 Clutch rating. This is the "who we are" ad.</p>
+
+    <h4>Elite Engineering + AI</h4>
+    <p>Talent quality + AI leverage. Top 0.4% engineers, Prague-based, US-focused. Full-stack JS/TS. Ends with a proof claim about AI-accelerated delivery.</p>
+  </div>
+</details>
+
+<!-- Wave 1 detail -->
+<details>
+  <summary><span><span class="summary-tag">Wave 1</span>Ads: ad-set level detail</span></summary>
+  <div class="details-body">
+    <p style="color:var(--ink-soft);">9 ads total, live mid–late April. <a class="sheet-link" href="https://docs.google.com/spreadsheets/d/1UXhgYhPgjbk-n2r3yPwloI-0xV5GjwvE/edit?gid=999722113#gid=999722113" target="_blank" rel="noopener">See full copy — Paid LinkedIn Overview and Copy</a></p>
+    <table class="adsets">
+      <thead>
+        <tr><th>Ad set</th><th>Track / Audience</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="name">Awareness — Verticals Tight</td><td>T1 / ICP targeting</td><td class="purpose">Hit the core ICP with the Industry Expertise angle.</td></tr>
+        <tr><td class="name">Awareness — Verticals Broad</td><td>T1 / Seniority + growth rate</td><td class="purpose">Broader reach inside verticals. Tests whether the angle scales outside tight targeting.</td></tr>
+        <tr><td class="name">Awareness — SaaS Tight</td><td>T2 / B2B SaaS ICP</td><td class="purpose">Scaling Problem angle to SaaS CTOs/CPOs. Lands on homepage for volume.</td></tr>
+        <tr><td class="name">Awareness — SaaS Broad</td><td>T2 / SaaS broad</td><td class="purpose">Broader reach across B2B SaaS. Scale test.</td></tr>
+        <tr><td class="name">Awareness — CTO Carousel</td><td>Both tracks</td><td class="purpose">Educational — "Signs your roadmap is outrunning your team." Format test.</td></tr>
+        <tr><td class="name">Awareness — CPO Carousel</td><td>Both tracks</td><td class="purpose">Educational — "What separates a vendor from a product partner."</td></tr>
+        <tr><td class="name">Outbound — Brand v1 / v2 / v3</td><td>Outbound list (~1,500)</td><td class="purpose">Matched Audience warm-up. Three brand rotations ahead of the outbound sequences.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</details>
+
+<!-- Wave 2 detail -->
+<details>
+  <summary><span><span class="summary-tag">Wave 2</span>Ads: ad-set level detail</span></summary>
+  <div class="details-body">
+    <p style="color:var(--ink-soft);">7 ads total, live early–mid May. Depends on the four industry pages (fintech, cybersec, healthtech, SaaS/general) and the reviews page going live. <a class="sheet-link" href="https://docs.google.com/spreadsheets/d/1UXhgYhPgjbk-n2r3yPwloI-0xV5GjwvE/edit?gid=999722113#gid=999722113" target="_blank" rel="noopener">See full copy — Paid LinkedIn Overview and Copy</a></p>
+    <table class="adsets">
+      <thead>
+        <tr><th>Ad set</th><th>Track / Audience</th><th>Purpose</th><th>Lands on</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="name">Consideration — Verticals Brand</td><td>T1 / Tight</td><td class="purpose">Conversion-optimized. Leads with industry proof + partnership framing.</td><td class="purpose">Industry page (matching vertical)</td></tr>
+        <tr><td class="name">Consideration — AI One-Pager</td><td>T1 / Gated content</td><td class="purpose">Document ad. Gated AI one-pager as the conversion event.</td><td class="purpose">LinkedIn Lead Gen Form</td></tr>
+        <tr><td class="name">Consideration — Social Proof</td><td>T2 / SaaS Tight</td><td class="purpose">5.0 Clutch, 65+ products, 4-yr partnership. Trust-building for SaaS buyers.</td><td class="purpose"><strong>New reviews page</strong></td></tr>
+        <tr><td class="name">Consideration — Guide Download</td><td>T2 / SaaS Gated</td><td class="purpose">Document ad. "How high-growth companies scale product engineering."</td><td class="purpose">LinkedIn Lead Gen Form</td></tr>
+        <tr><td class="name">Retargeting — Partnership</td><td>Website visitors (90d)</td><td class="purpose">"4-year average partnership. There's a reason." Re-engagement.</td><td class="purpose">Contact page</td></tr>
+        <tr><td class="name">Retargeting — Industry</td><td>Website visitors (90d)</td><td class="purpose">Vertical proof, direct CTA. For anyone who hit a relevant page.</td><td class="purpose">Contact page</td></tr>
+        <tr><td class="name">Retargeting — Direct CTA</td><td>Ad engagers</td><td class="purpose">Warmest audience. Book-a-call.</td><td class="purpose">Contact page</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:12px;">
+      <strong>Reviews page spec (v1, Barbora owns the build):</strong> H1 anchored to the proof ("5.0 on Clutch. 65+ products. 4 years on average."), Clutch reviews embed, 3–4 featured quote pulls with client logos, single primary CTA (book a call). No services blocks, no team section. Doubles as a retargeting destination for Track 1 and the Clutch spend attribution anchor.
+    </p>
+  </div>
+</details>
+
+<!-- Pending content -->
+<details>
+  <summary><span><span class="summary-tag">Pending</span>Content still being built for Wave 2</span></summary>
+  <div class="details-body">
+    <p style="color:var(--ink-soft);">Wave 2 (consideration + retargeting) launches once these five pages are live and the two gated downloads are drafted. Wave 1 runs at full volume while they come together.</p>
+    <table class="adsets">
+      <thead>
+        <tr><th>Asset</th><th>Role</th><th>Status</th><th>Scope</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="name">Fintech industry page</td><td>Track 1 landing destination</td><td>Copy final · Ha to design</td><td class="purpose">Full industry page — positioning, named clients, proof, CTA.</td></tr>
+        <tr><td class="name">Cybersecurity industry page</td><td>Track 1 landing destination</td><td>Copy final · Ha to design</td><td class="purpose">Full industry page — positioning, named clients, proof, CTA.</td></tr>
+        <tr><td class="name">Healthtech industry page</td><td>Track 1 landing destination</td><td>Copy final · Ha to design</td><td class="purpose">Full industry page — positioning, named clients, proof, CTA.</td></tr>
+        <tr><td class="name">SaaS / general software page</td><td>Track 2 landing destination</td><td>Copy final · Ha to design</td><td class="purpose">Full industry page — Track 2 positioning, proof, CTA.</td></tr>
+        <tr><td class="name">Reviews page</td><td>Track 2 social-proof destination + Clutch attribution anchor</td><td>Barbora drafting · Ha to design</td><td class="purpose">Lighter build. Clutch embed + key proof points (65+ products, 4-yr partnership, top 0.4%) + book-a-call CTA.</td></tr>
+        <tr><td class="name">AI one-pager (downloadable)</td><td>Track 1 gated asset for the Consideration — AI One-Pager document ad</td><td>Barbora drafting · Ha to design</td><td class="purpose">1-pager on our AI capabilities (LLMs, RAG, agentic) pitched at vertical CTOs/CPOs. Delivered after Lead Gen form fill.</td></tr>
+        <tr><td class="name">SaaS scaling guide (downloadable)</td><td>Track 2 gated asset for the Consideration — Guide Download document ad</td><td>Barbora drafting · Ha to design</td><td class="purpose">"How high-growth companies scale product engineering." Short-form guide for SaaS CTOs/CPOs. Delivered after Lead Gen form fill.</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:12px;">
+      Copy for the four industry pages is finalized — Ha is up next on design. The reviews page and the two downloadables are lighter: Barbora drafts them, then Ha picks up design. The reviews page doubles as a retargeting destination for Track 1.
+    </p>
+  </div>
+</details>
+
+<!-- Google Search -->
+<details>
+  <summary><span><span class="summary-tag">Google</span>Google Search — always-on intent capture</span></summary>
+  <div class="details-body">
+    <p>Google Search runs flat at 100k CZK/mo and doesn't flex with LinkedIn. It's the always-on layer — someone typing "fintech development partner" at 11pm should see us.</p>
+    <p style="margin-top:-6px;"><a class="sheet-link" href="https://docs.google.com/spreadsheets/d/1C6-hIk_kxsRV9vlGkEEMWbtzVDInwyaK/edit?gid=255209331#gid=255209331" target="_blank" rel="noopener">See full copy — Paid Google Overview and Copy</a></p>
+    <h4>10 ad groups, RSA format</h4>
+    <ul class="tight">
+      <li>Product development partner (core positioning)</li>
+      <li>Fintech engineering</li>
+      <li>Healthtech engineering</li>
+      <li>Cybersecurity engineering</li>
+      <li>React / Node.js</li>
+      <li>AI / ML Development</li>
+      <li>Mobile Development</li>
+      <li>Offshore Alternative</li>
+      <li>Czech Republic Engineering</li>
+      <li>SaaS Product Development</li>
+    </ul>
+    <p style="color:var(--ink-soft);font-size:14px;"><em>Each group:</em> 10 headlines (≤30 chars) + 4 descriptions (≤90 chars). Google rotates the best-performing combinations automatically.</p>
+  </div>
+</details>
+
+<!-- Budget -->
+<details>
+  <summary><span><span class="summary-tag">Budget</span>Budget split and the Clutch test</span></summary>
+  <div class="details-body">
+    <div class="budget-grid">
+      <div class="budget-card">
+        <div class="period">April – May</div>
+        <div class="amt">300k CZK/mo</div>
+        <div class="detail">LinkedIn + Google combined. Full launch spend.</div>
+      </div>
+      <div class="budget-card">
+        <div class="period">June onward</div>
+        <div class="amt">200k CZK/mo</div>
+        <div class="detail">LinkedIn ramps down, Google flat at 100k. Concentrate on 2–3 best performers.</div>
+      </div>
+      <div class="budget-card">
+        <div class="period">Clutch (parallel test)</div>
+        <div class="amt">125k CZK/mo</div>
+        <div class="detail">60-day window. Cut if zero confirmed leads by end of June.</div>
+      </div>
+    </div>
+    <p style="margin-top:16px;font-size:14px;color:var(--ink-soft);">
+      The June step-down is intentional. First performance review is June–July, at which point we'll have enough data to stop spreading spend across six angles and concentrate it on the ones actually delivering.
+    </p>
+    <p style="margin-top:10px;"><a class="sheet-link" href="https://docs.google.com/spreadsheets/d/1xdBd7jX-BEenHvnEmELwZ3V0yrU69Fjf/edit?gid=288246099#gid=288246099" target="_blank" rel="noopener">See month-by-month split — Budget Breakdown</a></p>
+  </div>
+</details>
+
+<!-- Expectations -->
+<details open>
+  <summary><span><span class="summary-tag">Expectations</span>What Jake should expect, month by month</span></summary>
+  <div class="details-body">
+    <div class="expect-grid">
+      <div class="expect">
+        <div class="n">4–5</div>
+        <div class="l">Paid MQLs / month · Phase 1 (Apr–May)</div>
+        <div class="d">Combined with organic, targeting 7 total MQLs/month.</div>
+      </div>
+      <div class="expect">
+        <div class="n">3–4</div>
+        <div class="l">Paid MQLs / month · Phase 2 (June+)</div>
+        <div class="d">Lower volume but higher-quality as we concentrate on winning angles.</div>
+      </div>
+      <div class="expect">
+        <div class="n">1–2</div>
+        <div class="l">SQLs / month from paid</div>
+        <div class="d">30–40% MQL-to-SQL conversion.</div>
+      </div>
+      <div class="expect">
+        <div class="n">June–July</div>
+        <div class="l">First real performance review</div>
+        <div class="d">Enough data by then to kill what's not working and double down on what is.</div>
+      </div>
+    </div>
+
+    <h4>What won't be obvious in the first 30 days</h4>
+    <ul class="tight">
+      <li><strong>Awareness ads won't drive direct MQLs.</strong> They're warming the audience for Wave 2 and for our outbound motion. Judging them on form fills misses the point.</li>
+      <li><strong>Outbound warm-up impact is measured in outbound reply rate,</strong> not in ad metrics. That feedback loop closes 2–3 weeks into the sequences.</li>
+      <li><strong>Vertical traffic is slow but valuable.</strong> Track 1 audiences are smaller; lower CTR is expected, and MQL quality should be higher.</li>
+    </ul>
+
+    <h4>What to push back on if you see it</h4>
+    <ul class="tight">
+      <li>Any vertical ad not leading with industry proof — Industry Expertise is the primary bet, not a fallback.</li>
+      <li>Any copy drifting toward "agency," "dev shop," or generic engineering-speed claims.</li>
+      <li>Client names in paid copy (rule: proof points and stats only, no named logos).</li>
+    </ul>
+  </div>
+</details>
+
+<div class="footer">
+  Prepared by Barbora · Updated 20 April 2026 · For the next 1:1 when Jake is back · Campaign structure reflects the Q2 strategy aligned with Jake on the four-pillar positioning and named-client proof approach.
+</div>
+
+</div>
+</body>
+</html>
